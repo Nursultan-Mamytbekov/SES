@@ -1,0 +1,34 @@
+﻿@model SES.Models.PinRequestModel
+
+@{
+    ViewData["Title"] = "GetInformation";
+}
+
+
+<div class="container">
+    <h4>Информация о субъекте персональных данных</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="GetInformation">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Pin" class="control-label"></label>
+                    <input asp-for="Pin" class="form-control" />
+                    <span asp-validation-for="Pin" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Запросить" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Index">Назад</a>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

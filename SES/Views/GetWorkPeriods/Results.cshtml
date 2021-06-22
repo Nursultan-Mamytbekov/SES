@@ -1,0 +1,54 @@
+﻿@model SES.Services.Soap.ServiceReference.PersonalAccountInfoWithSumResponse
+
+@{
+    ViewData["Title"] = "Results";
+}
+<div>
+    <div class="container">
+        <h4>Информация о субъекте персональных данных</h4>
+        <table class="table table-sm table-bordered mt-5">
+            <tr>
+                <th class="w-25">@Html.DisplayName("ИМЯ")</th>
+                <td>@Html.DisplayFor(model => model.WorkPeriodInfo.FirstName)</td>
+            </tr>
+            <tr>
+                <th>@Html.DisplayName("Фамилия")</th>
+                <td>@Html.DisplayFor(model => model.WorkPeriodInfo.LastName)</td>
+            </tr>
+            <tr>
+                <th>@Html.DisplayName("Отчество")</th>
+                <td>@Html.DisplayFor(model => model.WorkPeriodInfo.Patronymic)</td>
+            </tr>
+            <tr>
+                <th>@Html.DisplayName("ИМЯ")</th>
+                <td>@Html.DisplayFor(model => model.WorkPeriodInfo.FirstName)</td>
+            </tr>
+        </table>
+    </div>
+    <h4>Информация о начислениях страховых взносов</h4>
+    <table class="table table-sm table-bordered">
+            <thead>
+                <tr>
+                    <th>Работадатель</th>
+                    <th>ИНН</th>
+                    <th>Регистрационный номер СФ</th>
+                    <th>Дата начала</th>
+                    <th>Дата конца</th>
+                    <th>Доход</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.WorkPeriodInfo.WorkPeriods)
+                {
+                <tr>
+                    <td>@Html.DisplayFor(model => item.Payer)</td>
+                    <td>@Html.DisplayFor(model => item.INN)</td>
+                    <td>@Html.DisplayFor(model => item.NumSF)</td>
+                    <td>@Html.DisplayFor(model => item.DateBegin)</td>
+                    <td>@Html.DisplayFor(model => item.DateEnd)</td>
+                    <td>@Html.DisplayFor(model => item.Salary)</td>
+                </tr>
+                }
+            </tbody>           
+        </table>
+</div>

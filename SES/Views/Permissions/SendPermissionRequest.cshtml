@@ -1,0 +1,110 @@
+﻿@model SES.Models.RequestPermissionModel
+
+@{
+    ViewData["Title"] = "SendPermissionRequest";
+}
+
+<div class="container">
+    <h4>Форма заполнения для выдачи разрешения</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-10 mx-auto">
+            <form asp-action="SendPermissionRequest">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">                
+                    <input asp-for="OrganizationId" type="hidden" value="fc12b8d1-dc09-49f1-95f7-911bb2f97cc0" />                
+                </div>
+                <div class="form-row mb-4">
+                    <div class="col">
+                        <label asp-for="Pin" class="control-label"></label>
+                        <input asp-for="Pin" class="form-control form-control-sm" />
+                        <span asp-validation-for="Pin" class="text-danger"></span>
+                    </div>
+                    <div class="col">
+                        <label asp-for="PhoneNumber" class="control-label"></label>
+                        <input asp-for="PhoneNumber" class="form-control form-control-sm" />
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-row mb-4">
+                    <div class="col">
+                        <label asp-for="LastName" class="control-label"></label>
+                        <input asp-for="LastName" class="form-control form-control-sm" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                    <div class="col">
+                        <label asp-for="BirthDate" class="control-label"></label>
+                        <input asp-for="BirthDate" type="date" class="form-control form-control-sm" />
+                        <span asp-validation-for="BirthDate" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-row mb-4">
+                    <div class="col">
+                        <label asp-for="FirstName" class="control-label"></label>
+                        <input asp-for="FirstName" class="form-control form-control-sm" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="col">
+                        <label asp-for="EndDate" class="control-label"></label>
+                        <input asp-for="EndDate" type="date" class="form-control form-control-sm" />
+                        <span asp-validation-for="EndDate" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-row mb-4">
+                    <div class="col">
+                        <label asp-for="Patronymic" class="control-label"></label>
+                        <input asp-for="Patronymic" class="form-control form-control-sm" />
+                        <span asp-validation-for="Patronymic" class="text-danger"></span>
+                    </div>
+                    <div class="col">
+                        <label asp-for="PassportAddress" class="control-label"></label>
+                        <input asp-for="PassportAddress" class="form-control form-control-sm" />
+                        <span asp-validation-for="PassportAddress" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-row mb-4">
+                    <div class="col">
+                        <label asp-for="FactAddress" class="control-label"></label>
+                        <input asp-for="FactAddress" class="form-control form-control-sm" />
+                        <span asp-validation-for="FactAddress" class="text-danger"></span>
+                    </div>
+                    <div class="col">
+                        <label asp-for="PassportNumber" class="control-label"></label>
+                        <input asp-for="PassportNumber" class="form-control form-control-sm" />
+                        <span asp-validation-for="PassportNumber" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-row mb-4">
+                    <div class="col">
+                        <label asp-for="PassportIssuedDate" class="control-label"></label>
+                        <input asp-for="PassportIssuedDate" type="date" class="form-control form-control-sm" />
+                        <span asp-validation-for="PassportIssuedDate" class="text-danger"></span>
+                    </div>
+                    <div class="col">
+                        <label asp-for="PassportIssuedBy" class="control-label"></label>
+                        <input asp-for="PassportIssuedBy" class="form-control form-control-sm" />
+                        <span asp-validation-for="PassportIssuedBy" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-row mb-4">
+                    <div class="col">
+                        <label asp-for="Email" class="control-label"></label>
+                        <input asp-for="Email" class="form-control form-control-sm" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Запросить" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@*<div>
+    <a asp-action="Index">Назад</a>
+</div>*@
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

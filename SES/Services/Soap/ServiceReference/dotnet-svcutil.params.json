@@ -1,0 +1,12 @@
+{
+  "providerId": "Microsoft.Tools.ServiceModel.Svcutil",
+  "version": "2.0.2",
+  "options": {
+    "inputs": [
+      "http://172.16.100.127/wsdl?xRoadInstance=central-server&memberClass=GOV&memberCode=70000003&subsystemCode=sf-personal-data&serviceCode=GetPersonalAccountInfoWithSumInfo"
+    ],
+    "outputFile": "Reference.cs",
+    "targetFramework": "net5.0",
+    "typeReuseMode": "All"
+  }
+}

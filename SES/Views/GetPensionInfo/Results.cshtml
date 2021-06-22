@@ -1,0 +1,181 @@
+<<<<<<< HEAD
+﻿@model SES.Services.Soap.ServiceReference.PensionInfoWithSumResponse
+@using SES.Data.Entities
+@{
+    ViewData["Title"] = "Results";
+    var state = (PensionState)Model.PensionInfo.PinInfos[0].State;
+}
+<div>
+    <div class="container">
+        <h4>Информация о пенсионере</h4>
+        <table class="table table-sm table-bordered mt-5">
+            <tr>
+                <th class="w-25">@Html.DisplayName("ПИН")</th>
+                <td>@Html.DisplayFor(model => model.PensionInfo.PinInfos[0].PIN)</td>
+            </tr>
+            <tr>
+                <th>@Html.DisplayName("Фамилия")</th>
+                <td>@Html.DisplayFor(model => model.PensionInfo.PinInfos[0].LastName)</td>
+            </tr>
+            <tr>
+                <th>@Html.DisplayName("Имя")</th>
+                <td>@Html.DisplayFor(model => model.PensionInfo.PinInfos[0].FirstName)</td>
+            </tr>
+            <tr>
+                <th>@Html.DisplayName("Отчество")</th>
+                <td>@Html.DisplayFor(model => state)</td>
+            </tr>
+        </table>
+    </div>
+    <h4>Информация о начислениях страховых взносов</h4>
+    <table class="table table-sm table-bordered">
+        <thead>
+            <tr>
+                <th>Работадатель</th>
+                <th>Дата назначения пенсии</th>
+                <th>Дата прекращения пенсии</th>
+                <th>Сумма пенсии</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.PensionInfo.DossierInfos)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(model => item.NumDossier)</td>
+                    <td>@Html.DisplayFor(model => item.DateFromInitial)</td>
+                    <td>@Html.DisplayFor(model => item.DateTo)</td>
+                    <td>@Html.DisplayFor(model => item.Sum)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+=======
+﻿
+<h1>Результаты запроса: </h1>
+
+@if (state == PensionState.NotRetired && Model.DossierInfos.Count() == 0)
+{
+<div>
+    <h3>Запрашиваемый человек не является пенсионером</h3>
+</div>
+<a asp-action="GetInformation" class="btn btn-outline-primary">Назад</a>
+}
+else if (state == PensionState.Died)
+{
+<div>
+    <h3>Запрашиваемый человек умер</h3>
+</div>
+<a asp-action="GetInformation" class="btn btn-outline-primary">Назад</a>
+}
+else if (state == PensionState.InactivePin)
+{
+<div>
+    <h3>ПИН недействующий</h3>
+</div>
+<a asp-action="GetInformation" class="btn btn-outline-primary">Назад</a>
+}
+else if (state == PensionState.NotFoundPin)
+{
+<div>
+    <h3>ПИН не найден</h3>
+</div>
+<a asp-action="GetInformation" class="btn btn-outline-primary">Назад</a>
+}
+else
+{
+<div>
+    <hr />
+    <table class="table table-bordered table-sm">
+        <tr>
+            <th class="w-25">@Html.DisplayNameFor(model => model.Pin)</th>
+            <td>@Html.DisplayFor(model => model.Pin)</td>
+        </tr>
+    </table>
+    <h4 class="text-center">Сведения по ПИН</h4>
+    @foreach (var item in Model.PinInfos)
+        {
+    <table class="table table-bordered table-sm">
+        <tr>
+            <th class="w-25">Дата</th>
+            <td>@item.Date</td>
+        </tr>
+        <tr>
+            <th>Статус</th>
+            <td>@item.State.GetEnumDisplayAttributeName()</td>
+        </tr>
+        <tr>
+            <th>ПИН</th>
+            <td>@item.Pin</td>
+        </tr>
+        <tr>
+            <th>Фамилия</th>
+            <td>@item.LastName</td>
+        </tr>
+        <tr>
+            <th>Полное имя</th>
+            <td>@item.FullName</td>
+        </tr>
+        <tr>
+            <th>Организация</th>
+            <td>@item.Issuer</td>
+        </tr>
+    </table>
+        }
+    <h4 class="text-center">Сведения по пенсии</h4>
+    @foreach (var item in Model.DossierInfos)
+        {
+    <table class="table table-bordered table-sm bg-light mb-5">
+        <tr>
+            <th class="w-25">РУСФ</th>
+            <td>@item.Rusf</td>
+        </tr>
+        <tr>
+            <th>Номер ПД</th>
+            <td>@item.NumDossier</td>
+        </tr>
+        <tr>
+            <th>ПИН пенсионера</th>
+            <td>@item.PinPensioner</td>
+        </tr>
+        <tr>
+            <th>ПИН получателя</th>
+            <td>@item.PinRecipient</td>
+        </tr>
+        <tr>
+            <th>Дата создания</th>
+            <td>@item.DateFromInitial</td>
+        </tr>
+        <tr>
+            <th>Дата окончания</th>
+            <td>@item.DateTo</td>
+        </tr>
+        <tr>
+            <th>Сумма пенсии</th>
+            <td>@item.Sum</td>
+        </tr>
+        <tr>
+            <th>Вид пенсии</th>
+            <td>@item.KindOfPension</td>
+        </tr>
+        <tr>
+            <th>Категория пенсии</th>
+            <td>@item.CategoryPension</td>
+        </tr>
+        <tr>
+            <th>ПИН1</th>
+            <td>@item.Pin1</td>
+        </tr>
+        <tr>
+            <th>ПИН2</th>
+            <td>@item.Pin2</td>
+        </tr>
+    </table>
+        }
+</div>
+<div>
+    <a asp-action="GetInformation" class="btn btn-outline-primary">Назад</a>
+    <button id="generatePdf" class="btn btn-outline-success">Печать</button>
+</div>
+}
+>>>>>>> 310fd6fa45e9e1129f93c797392c1b7b9b8859eb

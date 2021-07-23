@@ -8,6 +8,8 @@
 //------------------------------------------------------------------------------
 
 
+using Microsoft.Extensions.Configuration;
+
 namespace SES.Services.Soap.ServiceReference
 {
 

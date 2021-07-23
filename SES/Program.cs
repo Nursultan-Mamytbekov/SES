@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;
 
+using SES.Data.Entities;
 using SES.Services;
 
 using System;
@@ -20,14 +22,14 @@ namespace SES
     {
         public static async Task Main(string[] args)
         {
-            var host = CreateHostBuilder(args).Build();
+            var host = CreateWebHostBuilder(args).Build();
 
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
                 try
                 {
-                    var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+                    var userManager = services.GetRequiredService<UserManager<User>>();
                     var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
                     await RoleInitializer.InitializeAsync(userManager, rolesManager);
                 }
@@ -39,13 +41,22 @@ namespace SES
             }
 
             host.Run();
+
+            //var config = new ConfigurationBuilder()
+            //    .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+            //    .AddJsonFile("appsettings.json").Build();
+
+            //var service = new PersonalAccountInfoWithSumService(config);
+
+            //var result = await service.GetPersonalAccountInfoAsync("22111199901083");
+
+            //Console.WriteLine(result.Message);
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+                .UseUrls("http://0.0.0.0:5000")
+                .UseKestrel()
+                .UseStartup<Startup>();
     }
 }

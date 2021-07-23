@@ -18,6 +18,6 @@ namespace SES.Data.Entities
         [Display(Name = "Недействующий ПИН")]
         InactivePin,
         [Display(Name = "ПИН не найден")]
-        NotFoundPin
+        NotFoundPin 
     }
 }

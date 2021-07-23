@@ -1,4 +1,7 @@
-﻿using SES.Models;
+﻿using Microsoft.Extensions.Configuration;
+
+using SES.Models;
+using SES.Services.Abstract;
 using SES.Services.Soap.ServiceReference;
 
 using System;
@@ -7,13 +10,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using static SES.Services.Soap.ServiceReference.PersonalDataUsageServiceClient;
+
 namespace SES.Services
 {
-    public class PermissionsService
+    public class PermissionsService : IPermissionsService
     {
+        private readonly IConfiguration _configuration;
+        private readonly string remoteAddress;
+
+        public PermissionsService(IConfiguration configuration)
+        {
+            _configuration = configuration;
+            remoteAddress = _configuration["SecurityServerAddress"];
+        }
+
         public async Task<RequestForPermissionResponse> SendRequestForPermission(RequestPermissionModel model)
         {
-            PersonalDataUsageServiceClient client = new PersonalDataUsageServiceClient();
+            PersonalDataUsageServiceClient client = new PersonalDataUsageServiceClient(EndpointConfiguration.BasicHttpBinding_IPersonalDataUsageService, remoteAddress);
             var request = GetRequestForPermissionHeaders();
             request.InitializeRequestForPermission = new RequestForPermissionModel()
             {               
@@ -48,7 +62,7 @@ namespace SES.Services
 
         public async Task<SendCodeForPermissionResponse> SendCodeForPermission(CodeForPermissionModel model)
         {
-            PersonalDataUsageServiceClient client = new PersonalDataUsageServiceClient();
+            PersonalDataUsageServiceClient client = new PersonalDataUsageServiceClient(EndpointConfiguration.BasicHttpBinding_IPersonalDataUsageService, remoteAddress);
             var request = GetCodeForPermissionHeaders();
             request.SendConfirmationCodeForPermission = new PermissionCode()
             {
@@ -85,14 +99,14 @@ namespace SES.Services
                 client = new XRoadClientIdentifierType
                 {
                     xRoadInstance = "central-server",
-                    memberClass = "GOV",
-                    memberCode = "70000003",
-                    subsystemCode = "settlements-service",
+                    memberClass = _configuration["ClientOptions:MemberClass"],
+                    memberCode = _configuration["ClientOptions:MemberCode"],
+                    subsystemCode = _configuration["ClientOptions:SubsystemCode"],
                     objectType = XRoadObjectType.SUBSYSTEM
                 },
                 protocolVersion = "4.0",
                 id = Guid.NewGuid().ToString(),
-                userId = "fc12b8d1-dc09-49f1-95f7-911bb2f97cc0"
+                userId = _configuration["ClientOptions:UserId"]
             };
         }
 
@@ -112,14 +126,14 @@ namespace SES.Services
                 client = new XRoadClientIdentifierType
                 {
                     xRoadInstance = "central-server",
-                    memberClass = "GOV",
-                    memberCode = "70000003",
-                    subsystemCode = "settlements-service",
+                    memberClass = _configuration["ClientOptions:MemberClass"],
+                    memberCode = _configuration["ClientOptions:MemberCode"],
+                    subsystemCode = _configuration["ClientOptions:SubsystemCode"],
                     objectType = XRoadObjectType.SUBSYSTEM
                 },
                 protocolVersion = "4.0",
                 id = Guid.NewGuid().ToString(),
-                userId = "fc12b8d1-dc09-49f1-95f7-911bb2f97cc0"
+                userId = _configuration["ClientOptions:UserId"]
             };
         }
     }

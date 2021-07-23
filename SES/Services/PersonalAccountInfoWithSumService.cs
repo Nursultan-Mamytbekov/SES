@@ -1,4 +1,6 @@
-﻿using SES.Services.Abstract;
+﻿using Microsoft.Extensions.Configuration;
+
+using SES.Services.Abstract;
 using SES.Services.Soap.ServiceReference;
 
 using System;
@@ -7,13 +9,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using static SES.Services.Soap.ServiceReference.PersonalDataUsageServiceClient;
+
 namespace SES.Services
 {
     public class PersonalAccountInfoWithSumService : IPersonalAccountInfoWithSumService
     {
+        private readonly IConfiguration _configuration;
+        public PersonalAccountInfoWithSumService(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
         public async Task<PersonalAccountInfoWithSumResponse> GetPersonalAccountInfoAsync(string pin)
         {
-            PersonalDataUsageServiceClient client = new PersonalDataUsageServiceClient();
+            string remoteAddress = _configuration["SecurityServerAddress"];
+            PersonalDataUsageServiceClient client = new PersonalDataUsageServiceClient(EndpointConfiguration.BasicHttpBinding_IPersonalDataUsageService, remoteAddress);
 
             var request = CreateHeaders();
 
@@ -52,14 +62,14 @@ namespace SES.Services
                 client = new XRoadClientIdentifierType
                 {
                     xRoadInstance = "central-server",
-                    memberClass = "GOV",
-                    memberCode = "70000003",
-                    subsystemCode = "settlements-service",
+                    memberClass = _configuration["ClientOptions:MemberClass"],
+                    memberCode = _configuration["ClientOptions:MemberCode"],
+                    subsystemCode = _configuration["ClientOptions:SubsystemCode"],
                     objectType = XRoadObjectType.SUBSYSTEM
                 },
                 protocolVersion = "4.0",
                 id = Guid.NewGuid().ToString(),
-                userId = "fc12b8d1-dc09-49f1-95f7-911bb2f97cc0"
+                userId = _configuration["ClientOptions:UserId"]
             };
         }
     }

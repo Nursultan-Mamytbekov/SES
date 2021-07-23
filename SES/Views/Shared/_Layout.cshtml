@@ -1,17 +1,21 @@
-﻿<!DOCTYPE html>
+﻿@inject SignInManager<User> signInManager
+@inject IUserRolesManager userRolesManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - SES</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/lib/DataTables/css/datatables.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SES</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">СЭС</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -19,12 +23,36 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Permissions" asp-action="SendPermissionRequest">Выдача разрешения</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Согласие субъекта
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" asp-area="" asp-controller="Permissions" asp-action="SendPermissionRequest">Выдача разрешения</a>
+                            </div>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="GetWorkPeriods" asp-action="GetInformation">Информация о заработной плате</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Информация о субъекте
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" asp-area="" asp-controller="GetWorkPeriods" asp-action="GetInformation">Информация о заработной плате</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="GetPensionInfo" asp-action="GetInformation">Информация о пенсии</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="GetBankPins" asp-action="GetInformation">Персональные сведения из ГРС</a>
+                            </div>
                         </li>
+                        @if (signInManager.IsSignedIn(User) && await userRolesManager.IsAdminAsync(User))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    админ панель
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" asp-area="admin" asp-controller="users" asp-action="Index">Пользователи</a>
+                                    <a class="dropdown-item" asp-area="admin" asp-controller="logs" asp-action="Index">Логи</a>
+                                </div>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
@@ -43,6 +71,7 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="~/lib/DataTables/js/datatables.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>

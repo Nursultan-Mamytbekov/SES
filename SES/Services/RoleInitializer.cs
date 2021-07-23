@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
+using SES.Data.Entities;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,23 +12,28 @@ namespace SES.Services
 {
     public class RoleInitializer
     {
-        public static async Task InitializeAsync(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        public static async Task InitializeAsync(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
-            string adminEmail = "admin@gmail.com";
-            string password = "asdasd";
-
             if (await roleManager.FindByNameAsync("admin") == null)
             {
                 await roleManager.CreateAsync(new IdentityRole("admin"));
             }
-
-            if (await userManager.FindByNameAsync(adminEmail) == null)
+            
+            if (await roleManager.FindByNameAsync("user") == null)
             {
-                IdentityUser admin = new IdentityUser { Email = adminEmail, UserName = adminEmail };
-                IdentityResult result = await userManager.CreateAsync(admin, password);
-                if (result.Succeeded)
+                await roleManager.CreateAsync(new IdentityRole("user"));
+            }
+
+            if (userManager.Users.Count() == 0)
+            {
+                User admin = new User { Email = "admin@gmail.com", UserName = "administrator" };
+                User user = new User { Email = "user@gmail.com", UserName = "user" };
+                IdentityResult adminResult = await userManager.CreateAsync(admin, "123qazedc");
+                IdentityResult userResult = await userManager.CreateAsync(user, "asdasd123");
+                if (adminResult.Succeeded && userResult.Succeeded)
                 {
                     await userManager.AddToRoleAsync(admin, "admin");
+                    await userManager.AddToRoleAsync(user, "user");
                 }
             }
         }

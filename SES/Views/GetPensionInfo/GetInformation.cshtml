@@ -4,13 +4,12 @@
     ViewData["Title"] = "GetInformation";
 }
 
-<<<<<<< HEAD
 <div class="container">
     <h4>Информация о пенсии</h4>
     <hr />
     <div class="row">
         <div class="col-md-4">
-            <form asp-action="GetInformation">
+            <form id="GetPensionForm" asp-action="GetInformation">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="Pin" class="control-label"></label>
@@ -18,42 +17,27 @@
                     <span asp-validation-for="Pin" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Запросить" class="btn btn-primary" />
+                    <button type="submit" id="GetPensionBtn" class="btn btn-primary">Запросить</button>
                 </div>
             </form>
         </div>
     </div>
-
-    <div>
-        <a asp-action="Index">Назад</a>
-    </div>
 </div>
 
-=======
-
-<h4>Информация о пенсии</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="GetInformation">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Pin" class="control-label"></label>
-                <input asp-for="Pin" class="form-control" />
-                <span asp-validation-for="Pin" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Запросить" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="Index">Назад</a>
-</div>
-
->>>>>>> 310fd6fa45e9e1129f93c797392c1b7b9b8859eb
 @section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#GetPensionBtn").click(function () {
+                var myForm = $("#GetPensionForm")
+                if (myForm) {
+                    $(this).prop("disabled", true);
+                    $(myForm).submit();
+                    $(this).html(
+                        `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> обработка`
+                    );
+                }
+            });
+        });
+    </script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

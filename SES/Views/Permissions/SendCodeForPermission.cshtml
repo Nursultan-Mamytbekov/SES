@@ -10,20 +10,17 @@
     <hr />
     <div class="row">
         <div class="col-md-4">
-            <form asp-action="SendCodeForPermission">
+            <form id="sendCodePermissionForm" asp-action="SendCodeForPermission">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="RequestId" class="control-label"></label>
-                    <input asp-for="RequestId" class="form-control" />
-                    <span asp-validation-for="RequestId" class="text-danger"></span>
-                </div>
-                <div class="form-group">
+                <input asp-for="RequestId" value="@ViewData["RequestId"]" class="form-control" type="hidden" />
+                <input asp-for="Pin" value="@ViewData["Pin"]" class="form-control" type="hidden" />
+                <div class="form-group">    
                     <label asp-for="Code" class="control-label"></label>
                     <input asp-for="Code" class="form-control" />
                     <span asp-validation-for="Code" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Запросить" class="btn btn-primary" />
+                    <button type="submit" id="sendCodePermissionBtn" class="btn btn-primary">Запросить</button>
                 </div>
             </form>
         </div>
@@ -35,5 +32,19 @@
 </div>
 
 @section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#sendCodePermissionBtn").click(function () {
+                var myForm = $("#sendCodePermissionForm")
+                if (myForm) {
+                    $(this).prop("disabled", true);
+                    $(myForm).submit();
+                    $(this).html(
+                        `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> обработка`
+                    );
+                }
+            });
+        });
+    </script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

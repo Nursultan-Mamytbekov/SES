@@ -9,8 +9,8 @@ namespace SES.Models
 {
     public class CodeForPermissionModel
     {
-        [Display(Name = "ID запроса")]
         public string RequestId { get; set; }
+        public string Pin { get; set; }
         [Display(Name = "Код из СМС")]
         public string Code { get; set; }
 

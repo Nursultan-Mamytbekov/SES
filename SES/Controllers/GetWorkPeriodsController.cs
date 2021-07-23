@@ -61,18 +61,27 @@ namespace SES.Controllers
 
             TempData["GetWorkPeriod"] = JsonConvert.SerializeObject(result);
             logger.LogInformation(result.Message);
+            logger.LogInformation(result.WorkPeriodInfo.PIN);
+            logger.LogInformation(result.WorkPeriodInfo.State);
             return RedirectToAction("Results");
         }
 
         public IActionResult Results()
         {
-            var result = JsonConvert.DeserializeObject<PersonalAccountInfoWithSumResponse>(TempData["GetWorkPeriod"] as string);
+            string getWorkPeriod = TempData["GetWorkPeriod"] as string;
 
-            if (result.OperationResult) return View(result);
+            if (getWorkPeriod != null)
+            {
+                var result = JsonConvert.DeserializeObject<PersonalAccountInfoWithSumResponse>(getWorkPeriod);
 
-            TempData["Message"] = result.Message;
+                if (result.OperationResult) return View(result);
+                
+                TempData["Message"] = result.Message;
+                
+                return RedirectToAction("Index", "Errors");
+            }
 
-            return RedirectToAction("Index", "Errors");
+            return RedirectToAction("Index", "Home");
         }
 
     }

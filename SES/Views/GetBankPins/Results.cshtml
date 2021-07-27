@@ -1,7 +1,8 @@
-﻿@model SES.Services.Soap.BankPinService.bankPinServiceResponse
-@using SES.Data.Entities
+﻿@model SES.Services.Soap.ServiceReference1.bankPinServiceResponse
 @{
     ViewData["Title"] = "Results";
+    var code = Convert.ToInt32(Model.response.familyStatus);
+    var familyStatus = (FamilyStatus?)code ?? null;
 }
 <div>
     <div class="container">
@@ -29,11 +30,27 @@
             </tr>
             <tr>
                 <th>@Html.DisplayName("Семейное положение")</th>
-                <td>@Html.DisplayFor(model => model.response.familyStatus)</td>
+                <td>@Html.DisplayFor(model => familyStatus)</td>
             </tr>
             <tr>
                 <th>@Html.DisplayName("Дата рождения")</th>
-                <td>@Html.DisplayFor(model => model.response.dateOfBirth)</td>
+                <td>@Html.DisplayFor(model => model.response.dateOfBirth.Date)</td>
+            </tr>
+            <tr>
+                <th>@Html.DisplayName("Дата выдачи паспорта")</th>
+                <td>@Html.DisplayFor(model => model.response.issuedDate.Date)</td>
+            </tr>
+            <tr>
+                <th>@Html.DisplayName("Орган, выдавший паспорт")</th>
+                <td>@Html.DisplayFor(model => model.response.passportAuthority)</td>
+            </tr>
+            <tr>
+                <th>@Html.DisplayName("Дата окончания паспорта")</th>
+                <td>@Html.DisplayFor(model => model.response.expiredDate.Date)</td>
+            </tr>
+            <tr>
+                <th>@Html.DisplayName("Адрес прописки")</th>
+                <td>@Html.DisplayFor(model => model.response.message)</td>
             </tr>
         </table>
         <button type="button" onclick="getData();" class="btn btn-sm btn-success">Печать</button>
@@ -68,7 +85,8 @@
                             widths: ['25%', '75%'],
 
                             body: data,
-                        }
+                        },
+                        fontSize: 12
                     }
                 ],
 

@@ -61,8 +61,6 @@ namespace SES.Controllers
 
             TempData["GetWorkPeriod"] = JsonConvert.SerializeObject(result);
             logger.LogInformation(result.Message);
-            logger.LogInformation(result.WorkPeriodInfo.PIN);
-            logger.LogInformation(result.WorkPeriodInfo.State);
             return RedirectToAction("Results");
         }
 

@@ -2,14 +2,14 @@
 
 using SES.Models;
 using SES.Services.Abstract;
-using SES.Services.Soap.BankPinService;
+using SES.Services.Soap.ServiceReference1;
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using static SES.Services.Soap.BankPinService.InfocomServicePortTypeClient;
+using static SES.Services.Soap.ServiceReference1.InfocomServicePortTypeClient;
 
 namespace SES.Services
 {
@@ -62,6 +62,7 @@ namespace SES.Services
                     memberCode = "70000005",
                     subsystemCode = "passport-service",
                     serviceCode = "bankPinService",
+                    serviceVersion = _configuration["BankPinService:ServiceVersion"],
                     objectType = XRoadObjectType.SERVICE
                 },
                 client = new XRoadClientIdentifierType
@@ -77,7 +78,5 @@ namespace SES.Services
                 userId = _configuration["ClientOptions:UserId"]
             };
         }
-
-
     }
 }

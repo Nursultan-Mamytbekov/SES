@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;
@@ -6,7 +7,7 @@ using Newtonsoft.Json;
 using SES.Data.Repo.Abstract;
 using SES.Models;
 using SES.Services.Abstract;
-using SES.Services.Soap.BankPinService;
+using SES.Services.Soap.ServiceReference1;
 
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ using System.Threading.Tasks;
 
 namespace SES.Controllers
 {
+    [Authorize]
     public class GetBankPinsController : Controller
     {
         private readonly ILogger<GetBankPinsController> logger;
@@ -41,13 +43,22 @@ namespace SES.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> GetInformation(BankPinRequestModel model)
         {
-            if (!ModelState.IsValid) return NotFound("error");
+            try
+            {
+                if (!ModelState.IsValid) return NotFound("error");
 
-            var result = await service.GetPinAsync(model);
+                var result = await service.GetPinAsync(model);
 
-            TempData["GetBankPin"] = JsonConvert.SerializeObject(result);
-            logger.LogInformation($"GetBankPinService success received on {model.Pin}");
 
+                TempData["GetBankPin"] = JsonConvert.SerializeObject(result);
+            } 
+            catch(Exception ex)
+            {
+                logger.LogError(ex.Message);
+                TempData["Message"] = "Ошибка паспортных данных";
+                return RedirectToAction("Index", "Errors");
+            }
+                
             return RedirectToAction("Results");
         }
 

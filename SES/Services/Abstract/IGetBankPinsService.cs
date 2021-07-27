@@ -1,5 +1,5 @@
 ﻿using SES.Models;
-using SES.Services.Soap.BankPinService;
+using SES.Services.Soap.ServiceReference1;
 
 using System;
 using System.Collections.Generic;
